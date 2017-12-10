@@ -1,0 +1,118 @@
+﻿<local:MapLayer x:Class="MiscLayer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFZ80MapEditor"
+             xmlns:localconverters="clr-namespace:WPFZ80MapEditor.ValueConverters"
+             mc:Ignorable="d" 
+             d:DesignHeight="256" d:DesignWidth="256"
+             Background="#01FFFFFF"
+             MouseDown="UserControl_MouseDown"
+                x:Name="MiscLayerControl"
+                AllowDrop="{Binding Active, ElementName=MiscLayerControl}" Drop="Misc_Drop" LayerType="MiscLayer"
+             >
+    <local:MapLayer.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ColorsAndStoryboards.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <SolidColorBrush x:Key="SelectionBrush" 
+                         Color="{Binding Color, Source={x:Static SystemColors.HighlightBrush}}"/>
+            <local:LayerType x:Key="LayerType">MiscLayer</local:LayerType>
+            <ControlTemplate x:Key="NoScroll">
+                <ItemsPresenter></ItemsPresenter>
+            </ControlTemplate>
+        
+            <localconverters:YConverter x:Key="YConverter"/>
+            <localconverters:XConverter x:Key="XConverter"/>
+            <localconverters:VolumeConverter x:Key="VolumeConverter"/>
+
+            <ControlTemplate x:Key="MoveThumbTemplate" TargetType="{x:Type Thumb}">
+                <Rectangle Fill="Transparent"/>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="ResizeDecoratorTemplate" TargetType="ListBoxItem">
+
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="MiscItemTemplate" TargetType="ContentControl">
+                <Grid>
+                    <Thumb Template="{StaticResource MoveThumbTemplate}" DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" Cursor="SizeAll"/>
+                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}"/>
+                </Grid>
+            </ControlTemplate>
+        
+            <DataTemplate DataType="{x:Type local:ZMisc}">
+                <ContentControl Template="{StaticResource MiscItemTemplate}">
+                    <Border Width="{Binding W}" Height="{Binding H}" BorderThickness="2" BorderBrush="Green"
+                            MouseLeftButtonDown="Misc_MouseLeftButtonDown" MouseLeftButtonUp="Misc_MouseLeftButtonUp" MouseMove="Misc_MouseMove">
+                        <Border.Background>
+                            <SolidColorBrush Color="#1A10EF10"/>
+                        </Border.Background>
+                    </Border>
+                </ContentControl>
+            </DataTemplate>
+        </ResourceDictionary>
+    </local:MapLayer.Resources>
+    
+    <Grid Width="256" Height="256">
+        <ListBox Name="MiscItemsControl" Template="{StaticResource NoScroll}" ItemsSource="{Binding Path=ZMisc}" 
+                 SelectionMode="Single" Background="Transparent" BorderThickness="0" 
+                 UseLayoutRounding="True" KeyDown="MiscItemsControl_KeyDown">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                    <Setter Property="Panel.ZIndex">
+                        <Setter.Value>
+                            <MultiBinding Converter="{StaticResource VolumeConverter}">
+                                <Binding Path="W"/>
+                                <Binding Path="H"/>
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Grid>
+                                    <Grid Name="ThumbGrid" Visibility="Hidden" Opacity="{Binding SelectionOpacity, ElementName=MiscLayerControl}">
+                                        <local:ResizeThumb Height="2" Cursor="SizeNS" Margin="0 -2 0 0"
+           VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+                                        <local:ResizeThumb Width="2" Cursor="SizeWE" Margin="-2 0 0 0"
+           VerticalAlignment="Stretch" HorizontalAlignment="Left"/>
+                                        <local:ResizeThumb Width="2" Cursor="SizeWE" Margin="0 0 -2 0"
+           VerticalAlignment="Stretch" HorizontalAlignment="Right" Background="{StaticResource SelectionBrush}"/>
+                                        <local:ResizeThumb Height="2" Cursor="SizeNS" Margin="0 0 0 -2"
+           VerticalAlignment="Bottom"  HorizontalAlignment="Stretch"/>
+                                        <local:ResizeThumb Width="2" Height="2" Cursor="SizeNWSE" Margin="-2 -2 0 0"
+           VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                                        <local:ResizeThumb Width="2" Height="2" Cursor="SizeNESW" Margin="0 -2 -2 0"
+           VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                                        <local:ResizeThumb Width="2" Height="2" Cursor="SizeNESW" Margin="-2 0 0 -2"
+           VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                                        <local:ResizeThumb Width="2" Height="2" Cursor="SizeNWSE" Margin="0 0 -2 -2"
+           VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                    <ContentPresenter/>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <!--When the ListBoxItem is selected draw a simple blue border around it.-->
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter TargetName="ThumbGrid" Property="Visibility" Value="Visible"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ListBox>
+    </Grid>
+</local:MapLayer>

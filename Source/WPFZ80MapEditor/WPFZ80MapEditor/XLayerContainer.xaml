@@ -1,0 +1,84 @@
+﻿<ListBox x:Class="XLayerContainer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFZ80MapEditor"
+             mc:Ignorable="d" 
+             x:Name="LayerContainer"
+            ItemsSource="{Binding Maps}" SelectionMode="Single">
+
+    <ListBox.CommandBindings>
+    <CommandBinding x:Name="Paste" Command="Paste"
+                        CanExecute="Paste_CanExecute"
+                        Executed="Paste_Executed"/>
+    </ListBox.CommandBindings>
+    
+    <ListBox.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ColorsAndStoryboards.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <local:MapPositionConverter x:Key="MapPositionConverter"/>
+        </ResourceDictionary>
+    </ListBox.Resources>
+    
+    <ListBox.Template>
+        <ControlTemplate>
+            <ItemsPresenter Margin="0"></ItemsPresenter>
+        </ControlTemplate>
+    </ListBox.Template>
+
+    <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+            <Canvas>
+
+            </Canvas>
+        </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+
+    <ItemsControl.ItemContainerStyle>
+        <Style TargetType="ListBoxItem">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Focusable, ElementName=LayerContainer}" Value="False">
+                   <Setter Property="Focusable" Value="False"/>
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" BorderThickness="4" Margin="-4" Padding="{TemplateBinding Padding}" Background="Transparent" SnapsToDevicePixels="True"  BorderBrush="{TemplateBinding BorderBrush}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                    <Condition Property="Focusable" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource SelectionBrush}"/>
+                                <Setter Property="Panel.ZIndex" Value="9999"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                    <Condition Property="Focusable" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource InactiveSelectionBrush}"/>
+                                <Setter Property="Panel.ZIndex" Value="9999"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="PreviewMouseEvent"/>
+            <EventSetter Event="PreviewMouseRightButtonUp" Handler="PreviewMouseEvent"/>
+
+            <Setter Property="Canvas.Left" Value="{Binding Path=X, Converter={StaticResource MapPositionConverter}, ConverterParameter=8}"/>
+            <Setter Property="Canvas.Top" Value="{Binding Path=Y, Converter={StaticResource MapPositionConverter}, ConverterParameter=8}"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+    </ItemsControl.ItemContainerStyle>
+</ListBox>

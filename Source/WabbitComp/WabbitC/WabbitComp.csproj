@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{68666923-07F9-433E-92F3-F1806A2DBB5F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WabbitC</RootNamespace>
+    <AssemblyName>WabbitC</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WabbitComp Debug|x86'">
+    <OutputPath>..\..\..\Debug\</OutputPath>
+    <Optimize>false</Optimize>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WabbitComp Release|x86'">
+    <OutputPath>..\..\..\Release\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>WabbitC.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyGenerator.cs" />
+    <Compile Include="Compile.cs" />
+    <Compile Include="ExpressionEval.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="IncludeDirs.cs" />
+    <Compile Include="MessageSystem.cs" />
+    <Compile Include="Model\BasicBlock.cs" />
+    <Compile Include="Model\Block.cs" />
+    <Compile Include="CastHelper.cs" />
+    <Compile Include="Model\IRValue.cs" />
+    <Compile Include="Model\Datum.cs" />
+    <Compile Include="Model\Declaration.cs" />
+    <Compile Include="Model\ILValue.cs" />
+    <Compile Include="Model\Immediate.cs" />
+    <Compile Include="Model\Statements\BlockCopyReverse.cs" />
+    <Compile Include="Model\Statements\Dec.cs" />
+    <Compile Include="Model\Statements\ILoop.cs" />
+    <Compile Include="Model\Statements\Inc.cs" />
+    <Compile Include="Model\Statements\ReturnAddress.cs" />
+    <Compile Include="Model\Statements\Exchange.cs" />
+    <Compile Include="Model\Statements\ReturnMove.cs" />
+    <Compile Include="Model\Statements\StackFrameCleanup.cs" />
+    <Compile Include="Model\Statements\StackFrameInit.cs" />
+    <Compile Include="Model\Statements\AddressOf.cs" />
+    <Compile Include="Model\BlockEnumerator.cs" />
+    <Compile Include="Model\Statements\Annotation.cs" />
+    <Compile Include="Model\Statements\Call.cs" />
+    <Compile Include="Model\Statements\Cast.cs" />
+    <Compile Include="Model\Statements\Condition\NotEquals.cs" />
+    <Compile Include="Model\Statements\Condition\GreaterThan.cs" />
+    <Compile Include="Model\Statements\Condition\GreaterThanEquals.cs" />
+    <Compile Include="Model\Statements\Condition\LessThanEquals.cs" />
+    <Compile Include="Model\Statements\Condition\Equals.cs" />
+    <Compile Include="Model\Statements\Condition\LessThan.cs" />
+    <Compile Include="Model\Statements\DoWhile.cs" />
+    <Compile Include="Model\Statements\Goto.cs" />
+    <Compile Include="Model\Statements\Math\Add.cs" />
+    <Compile Include="Model\Statements\Assignment.cs" />
+    <Compile Include="Model\Statements\AssignmentHelper.cs" />
+    <Compile Include="Model\Statements\Condition\ConditionStatement.cs" />
+    <Compile Include="Model\Statements\ControlStatement.cs" />
+    <Compile Include="Model\Statements\Load.cs" />
+    <Compile Include="Model\Statements\Math\MathStatement.cs" />
+    <Compile Include="Model\Statements\Math\Mult.cs" />
+    <Compile Include="Model\Statements\Math\Div.cs" />
+    <Compile Include="Model\Statements\FunctionCall.cs" />
+    <Compile Include="Model\Statements\If.cs" />
+    <Compile Include="Model\Statements\Label.cs" />
+    <Compile Include="Model\Statements\Math\Not.cs" />
+    <Compile Include="Model\Statements\Move.cs" />
+    <Compile Include="Model\Statements\Pop.cs" />
+    <Compile Include="Model\Statements\Push.cs" />
+    <Compile Include="Model\Statements\Return.cs" />
+    <Compile Include="Model\Statements\StackLoad.cs" />
+    <Compile Include="Model\Statements\StackStore.cs" />
+    <Compile Include="Model\Statements\Statement.cs" />
+    <Compile Include="Model\Statements\StatementHelper.cs" />
+    <Compile Include="Model\Statements\Store.cs" />
+    <Compile Include="Model\Statements\Math\Sub.cs" />
+    <Compile Include="Model\Statements\ValueStatement.cs" />
+    <Compile Include="Model\Statements\While.cs" />
+    <Compile Include="Model\Types\Array.cs" />
+    <Compile Include="Model\Types\FunctionType.cs" />
+    <Compile Include="Model\Module.cs" />
+    <Compile Include="Model\Types\BuiltInType.cs" />
+    <Compile Include="Model\Types\StrippedFunctionType.cs" />
+    <Compile Include="Model\Types\Type.cs" />
+    <Compile Include="Model\Types\TypeHelper.cs" />
+    <Compile Include="Optimizer\ConstantsOptimizer.cs" />
+    <Compile Include="Optimizer\CSE.cs" />
+    <Compile Include="Optimizer\LiveVariableAnalysis.cs" />
+    <Compile Include="Optimizer\Loop\ConstantsOptimizer.cs" />
+    <Compile Include="Optimizer\Loop\LoopInvarianceReduction.cs" />
+    <Compile Include="Optimizer\Loop\Optimizer.cs" />
+    <Compile Include="Optimizer\Loop\StrengthReduction.cs" />
+    <Compile Include="Optimizer\VariableReuse.cs" />
+    <Compile Include="Optimizer\VariableReducer.cs" />
+    <Compile Include="Optimizer\DeadVariableOptimizer.cs" />
+    <Compile Include="Optimizer\DeadCodeOptimizer.cs" />
+    <Compile Include="Optimizer\Optimizer.cs" />
+    <Compile Include="Parser.cs" />
+    <Compile Include="ParserExpression.cs" />
+    <Compile Include="PreprocessorDefine.cs" />
+    <Compile Include="PreprocessorParser.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StatementPasses\AddStackDeclaration.cs" />
+    <Compile Include="StatementPasses\ApplyCallingConvention.cs" />
+    <Compile Include="StatementPasses\BlockCollapse.cs" />
+    <Compile Include="StatementPasses\ConvertAddSubToIncDec.cs" />
+    <Compile Include="Optimizer\RemoveUselessMath.cs" />
+    <Compile Include="StatementPasses\RegisterAllocator\NewHelper.cs" />
+    <Compile Include="StatementPasses\ReplaceLocalsWithGlobals.cs" />
+    <Compile Include="StatementPasses\MarkRecursiveFunctions.cs" />
+    <Compile Include="StatementPasses\LabelMerger.cs" />
+    <Compile Include="StatementPasses\RegisterAllocator\Graph.cs" />
+    <Compile Include="StatementPasses\RegisterAllocator\Helper.cs" />
+    <Compile Include="StatementPasses\RegisterAllocator\Register.cs" />
+    <Compile Include="StatementPasses\RemoveMathImmediates.cs" />
+    <Compile Include="StatementPasses\RemovePointlessGotos.cs" />
+    <Compile Include="StatementPasses\ReorderDeclarations.cs" />
+    <Compile Include="StatementPasses\RegisterAllocator\SuperRegisterAllocator.cs" />
+    <Compile Include="StatementPasses\RegisterAllocator\SmarterRegisterAllocator.cs" />
+    <Compile Include="StatementPasses\RegisterAllocator\DumbRegisterAllocator.cs" />
+    <Compile Include="StatementPasses\IfGotoConversion.cs" />
+    <Compile Include="StatementPasses\LoopGotoConversion.cs" />
+    <Compile Include="Model\StackAllocator.cs" />
+    <Compile Include="Tokenizer.cs" />
+    <Compile Include="TokenPasses\ArrayDereference.cs" />
+    <Compile Include="TokenPasses\Bracer.cs" />
+    <Compile Include="TokenPasses\CompoundAssignment.cs" />
+    <Compile Include="TokenPasses\CharacterRemover.cs" />
+    <Compile Include="TokenPasses\ForLoopRemover.cs" />
+    <Compile Include="TokenPasses\TokenPass.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="test.c">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

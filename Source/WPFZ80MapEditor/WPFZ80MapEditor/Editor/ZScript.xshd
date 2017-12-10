@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SyntaxDefinition name="Zelda Script" extensions=".zcr">
+	<Environment>
+		<Custom name="TypeReference" bold="false" italic="false" color="#04ABAB" />
+		<Custom name="UnknownEntity" bold="false" italic="false" color="#AB0404" />
+		<Default bold="false" italic="false" color="Black" bgcolor="White" />
+		<Selection bold="false" italic="false" color="White" bgcolor="#316AC5" />
+		<VRuler bold="false" italic="false" color="#F1EFE2" bgcolor="White" />
+		<InvalidLines bold="false" italic="false" color="Red" />
+		<CaretMarker bold="false" italic="false" color="Yellow" />
+		<LineNumbers bold="false" italic="false" color="#ACA899" bgcolor="White" />
+		<FoldLine bold="false" italic="false" color="Gray" bgcolor="Black" />
+		<FoldMarker bold="false" italic="false" color="Gray" bgcolor="White" />
+		<SelectedFoldLine bold="false" italic="false" color="Black" />
+		<EOLMarkers bold="false" italic="false" color="#F1EFE2" bgcolor="White" />
+		<SpaceMarkers bold="false" italic="false" color="#F1EFE2" bgcolor="White" />
+		<TabMarkers bold="false" italic="false" color="#F1EFE2" bgcolor="White" />
+	</Environment>
+	<Properties>
+		<Property name="LineComment" value=";;" />
+	</Properties>
+	<Digits name="Digits" bold="false" italic="false" color="DarkBlue" />
+	<RuleSets>
+		<RuleSet ignorecase="true" escapecharacter="\">
+			<Delimiters>&amp;&lt;&gt;~!%^()-+=|\/{}[]:;"' ,	?</Delimiters>
+			<Span name="LineComment" stopateol="true" bold="false" italic="false" color="Green">
+				<Begin>;;</Begin>
+			</Span>
+      <MarkPrevious bold="true" italic="false" color="Blue">:</MarkPrevious>
+			<MarkPrevious bold="true" italic="false" color="MidnightBlue">(</MarkPrevious>
+			<KeyWords name="Punctuation" bold="false" italic="false" color="Black">
+				<Key word="?" />
+				<Key word="," />
+				<Key word=";" />
+				<Key word="(" />
+				<Key word=")" />
+				<Key word="[" />
+				<Key word="]" />
+				<Key word="{" />
+				<Key word="}" />
+				<Key word="+" />
+				<Key word="-" />
+				<Key word="/" />
+				<Key word="%" />
+				<Key word="*" />
+        <Key word="@@=" />
+				<Key word="&lt;" />
+				<Key word="&gt;" />
+				<Key word="^" />
+				<Key word="=" />
+				<Key word="~" />
+				<Key word="!" />
+				<Key word="|" />
+				<Key word="&amp;" />
+			</KeyWords>
+		</RuleSet>
+	</RuleSets>
+</SyntaxDefinition>

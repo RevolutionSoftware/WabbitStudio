@@ -1,0 +1,52 @@
+﻿<Window x:Class="EditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFZ80MapEditor"
+        mc:Ignorable="d" ShowInTaskbar="False" ShowActivated="True"
+        WindowStartupLocation="CenterOwner"
+        Title="EditorWindow" Height="453" Width="580">
+    <Window.CommandBindings>
+        <CommandBinding Command="Undo"
+                        CanExecute="UndoCanExecute"
+                        Executed="UndoExecuted"/>
+        <CommandBinding Command="Redo"
+                        CanExecute="RedoCanExecute"
+                        Executed="RedoExecuted"/>
+        <CommandBinding Command="Save"
+                        CanExecute="SaveCanExecute"
+                        Executed="SaveExecuted"/>
+    </Window.CommandBindings>
+    <DockPanel Panel.ZIndex="2">
+        <WrapPanel x:Name="ToolbarPanel" DockPanel.Dock="Top" Height="26" Panel.ZIndex="2" Background="White">
+            <WrapPanel.Effect>
+                <DropShadowEffect Direction="270" Opacity="0.25" ShadowDepth="5" />
+            </WrapPanel.Effect>
+            <ToolBar DockPanel.Dock="top" ToolBarTray.IsLocked="True" x:Name="MainToolBar" Height="26" Panel.ZIndex="1">
+                <Button Command="ApplicationCommands.Save">
+                    <Image Source="../Toolbar/save.bmp"  OpacityMask="#A8E61D"/>
+                </Button>
+                <Button Command="ApplicationCommands.Undo">
+                    <Image Source="../Toolbar/undo.png"  OpacityMask="#A8E61D"/>
+                </Button>
+                <Button Command="ApplicationCommands.Redo">
+                    <Image Source="../Toolbar/redo.png"  OpacityMask="#A8E61D"/>
+                </Button>
+            </ToolBar>
+        </WrapPanel>
+        <Grid Panel.ZIndex="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="23"/>
+            </Grid.RowDefinitions>
+            <WindowsFormsHost Name="ScriptEditorHost" Grid.Row="0" Margin="-10,0,-10,10">
+                <local:ScriptEditor></local:ScriptEditor>
+            </WindowsFormsHost>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Height="23">
+                <Button Content="OK" IsDefault="true" Width="75" Name="OKButton"/>
+                <Button Content="Cancel" IsCancel="True" Width="75" Margin="10,0,0,0" Name="CancelButton" />
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

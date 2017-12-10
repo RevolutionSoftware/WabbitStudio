@@ -1,0 +1,351 @@
+﻿<local:MapLayer
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFZ80MapEditor"
+             xmlns:converters="clr-namespace:WPFZ80MapEditor.ValueConverters"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             x:Class="XMapView"
+             mc:Ignorable="d" 
+    x:Name="MapView"
+             d:DesignHeight="256" d:DesignWidth="256" Width="256" Height="256" SnapsToDevicePixels="True" MouseMove="MapView_MouseMove"
+    MouseDown="MapView_MouseLeftButtonDown"
+    MouseLeave="MapView_MouseLeave"
+    Background="Transparent" LayerType="{x:Static local:LayerType.MapLayer}">
+    <local:MapLayer.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ColorsAndStoryboards.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <converters:TileConverter x:Key="TileConverter"/>
+            <converters:CollisionConverter x:Key="CollisionConverter"/>
+            <local:SegmentConverter x:Key="SegmentConverter"/>
+            <converters:TileIndexConverter x:Key="TileIndexConverter"/>
+            <converters:TileIndexComponentConverter x:Key="TileIndexComponentConverter"/>
+
+            <!--<local:Tileset Name="DUNGEON" x:Key="TilesetTest">
+                <local:Tileset.Tiles>
+                    <local:TilesCollection>
+                        <local:TileImageSource Index="0">
+                            <local:TileImageSource.Image>
+                                <BitmapImage>./TestTile.bmp</BitmapImage>
+                            </local:TileImageSource.Image>
+                        </local:TileImageSource>
+                    </local:TilesCollection>
+                </local:Tileset.Tiles>
+            </local:Tileset>
+
+            <local:TilegroupSelection x:Key="TilegroupTest" Tileset="{x:Null}">
+                <local:TilegroupSelection.TilegroupEntries>
+                    <local:TilegroupEntryCollection>
+                        <local:TilegroupEntry Index="117">
+                            <local:TilegroupEntry.Tile>
+                                <local:TileSelection Type="Tile" Tileset="{x:Null}" TileIndex="7"/>
+                            </local:TilegroupEntry.Tile>
+                        </local:TilegroupEntry>
+                        <local:TilegroupEntry Index="118">
+                            <local:TilegroupEntry.Tile>
+                                <local:TileSelection Type="Tile" Tileset="{x:Null}" TileIndex="7"/>
+                            </local:TilegroupEntry.Tile>
+                        </local:TilegroupEntry>
+                        <local:TilegroupEntry Index="134">
+                            <local:TilegroupEntry.Tile>
+                                <local:TileSelection Type="Tile" Tileset="{x:Null}" TileIndex="7"/>
+                            </local:TilegroupEntry.Tile>
+                        </local:TilegroupEntry>
+                        <local:TilegroupEntry Index="135">
+                            <local:TilegroupEntry.Tile>
+                                <local:TileSelection Type="Tile" Tileset="{x:Null}" TileIndex="7"/>
+                            </local:TilegroupEntry.Tile>
+                        </local:TilegroupEntry>
+                    </local:TilegroupEntryCollection>
+                </local:TilegroupSelection.TilegroupEntries>
+            </local:TilegroupSelection>
+
+            <local:MapData x:Key="MapDataTest" Tileset="{StaticResource TilesetTest}" Exists="True">
+                <local:MapData.Scenario>
+                    <local:Scenario>
+                        <local:Scenario.Tilesets>
+                            <local:TilesetList>
+                                <StaticResourceExtension ResourceKey="TilesetTest"/>
+                            </local:TilesetList>
+                        </local:Scenario.Tilesets>
+                    </local:Scenario>
+                </local:MapData.Scenario>
+                --><!--<local:MapData.TileData>
+                    <x:Array Type="{x:Type sys:Byte}">
+                        <sys:Byte>3</sys:Byte>
+                        <sys:Byte>2</sys:Byte>
+                    </x:Array>
+                </local:MapData.TileData>--><!--
+            </local:MapData>-->
+            <Style TargetType="ListBox" x:Key="TileNumberListBoxStyle">
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding Path=Active, RelativeSource={RelativeSource AncestorType=local:XMapView}}" Value="True"/>
+                            <Condition Binding="{Binding Path=Exists}" Value="True"/>
+                            <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True"/>
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <ItemsPresenter Margin="0"></ItemsPresenter>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border Name="ItemBorder" Width="16" Height="16" Background="White" HorizontalAlignment="Center">
+                                            <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,-1,0,0"><ContentPresenter/></TextBlock>
+                                        </Border>
+                                    
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource SelectionBrush}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="SelectionMode" Value="Single"/>
+                <Setter Property="Visibility" Value="Hidden"/>
+            </Style>
+        
+            <Style BasedOn="{StaticResource TileNumberListBoxStyle}" TargetType="ListBox" x:Key="HorizontalTileNumberListBoxStyle">
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <StackPanel Margin="0" Background="Transparent" Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        
+            <Style BasedOn="{StaticResource TileNumberListBoxStyle}" TargetType="ListBox" x:Key="VerticalTileNumberListBoxStyle">
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <StackPanel Margin="0" Background="Transparent" Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </local:MapLayer.Resources>
+
+    <Canvas>
+        <ListBox x:Name="HorizontalNumberingList" Panel.ZIndex="9999" Style="{StaticResource HorizontalTileNumberListBoxStyle}" Height="16" Canvas.Top="-20"
+                 SelectedIndex="{Binding HotIndex, ElementName=MapView, Converter={StaticResource TileIndexComponentConverter}, ConverterParameter={x:Static converters:TileIndexType.X}}"
+                 >            
+            <ListBox.Items>
+                <ListBoxItem>
+                    <sys:Int32>0</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>1</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>2</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>3</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>4</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>5</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>6</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>7</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>8</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>9</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>10</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>11</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>12</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>13</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>14</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>15</sys:Int32>
+                </ListBoxItem>
+            </ListBox.Items>
+        </ListBox>
+        <ListBox x:Name="VerticalNumberingList" Panel.ZIndex="9999" Style="{StaticResource VerticalTileNumberListBoxStyle}" Canvas.Left="-20"
+                 SelectedIndex="{Binding HotIndex, ElementName=MapView, Converter={StaticResource TileIndexComponentConverter}, ConverterParameter={x:Static converters:TileIndexType.Y}}"
+                 >
+            <ListBox.Items>
+                <ListBoxItem>
+                    <sys:Int32>0</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>1</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>2</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>3</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>4</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>5</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>6</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>7</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>8</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>9</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>10</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>11</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>12</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>13</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>14</sys:Int32>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <sys:Int32>15</sys:Int32>
+                </ListBoxItem>
+            </ListBox.Items>
+        </ListBox>
+        
+        <Grid Background="DarkGray" Visibility="{Binding ShowNewMaps, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=MapView}" Width="256" Height="256" IsHitTestVisible="False">
+            <TextBlock FontSize="200" Text="+" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,50" Foreground="#FFA0A0A0"/>
+        </Grid>
+
+        <local:MapView Map="{Binding .}" ShowCollisions="{Binding ShowCollisions,ElementName=MapView}" IsHitTestVisible="False"/>
+
+        <ItemsControl Panel.ZIndex="1" x:Name="AnimsControl" IsHitTestVisible="False" ItemsSource="{Binding ZAnims}" Background="{x:Null}" Visibility="{Binding Exists, Converter={StaticResource BooleanToVisibilityConverter}}" Width="256" Height="256">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <Canvas Background="{x:Null}">
+                        <ItemsPresenter/>
+                    </Canvas>
+                </ControlTemplate>
+            </ItemsControl.Template>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type ContentPresenter}">
+                    <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Image Width="16" Height="16" Panel.ZIndex="0" Effect="{StaticResource AnimTintEffect}">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource TileConverter}">
+                                <Binding ElementName="MapView" Path="DataContext.Tileset"/>
+                                <Binding Path="Image"/>
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!--<Border Panel.ZIndex="2" BorderThickness="2" Margin="-2" BorderBrush="{StaticResource SelectionBrush}"
+                Background="Transparent" Width="20" Height="20"
+                DataContext="{Binding Selection, ElementName=MapView}"
+                        Canvas.Left="{Binding MapOffset.X}"
+                        Canvas.Top="{Binding MapOffset.Y}">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Selection, ElementName=MapView}" Value="{x:Null}">
+                            <Setter Property="Opacity" Value="0"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Active, ElementName=MapView}" Value="False">
+                            <Setter Property="Opacity" Value="0"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                    <Setter Property="Opacity" Value="{StaticResource SelectionOpacity}"/>
+                </Style>
+            </Border.Style>
+        </Border>-->
+        <Border Panel.ZIndex="3" BorderThickness="2" Margin="-2" BorderBrush="{StaticResource SelectionBrush}"
+                Background="Transparent" Width="20" Height="20"
+                        Canvas.Left="{Binding HotIndex, Converter={StaticResource TileIndexConverter}, ConverterParameter={x:Static converters:TileIndexType.X}, ElementName=MapView}"
+                        Canvas.Top="{Binding HotIndex, Converter={StaticResource TileIndexConverter}, ConverterParameter={x:Static converters:TileIndexType.Y}, ElementName=MapView}">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HotIndex, ElementName=MapView}" Value="-1">
+                            <Setter Property="Opacity" Value="0"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                    <Setter Property="Opacity" Value="{StaticResource SelectionOpacity}"/>
+                </Style>
+            </Border.Style>
+        </Border>
+    </Canvas>
+    <!--
+        <ItemsControl Panel.ZIndex="2" x:Name="CollisionContainer" ItemsSource="{Binding TileData}"
+			Background="{x:Null}" Visibility="{Binding ShowCollisions, ElementName=MapView, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<local:MapPanel Background="{x:Null}"/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Rectangle x:Name="CollisionOverlay" Fill="Red" Opacity="0.25"
+						Panel.ZIndex="2" IsHitTestVisible="False" Width="16" Height="16"
+						Visibility="{Binding ., Converter={StaticResource CollisionConverter}}"/>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</Grid>-->
+</local:MapLayer>
